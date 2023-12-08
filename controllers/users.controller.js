@@ -2,7 +2,6 @@ const jwt = require("jsonwebtoken");
 const { models } = require("../config/sequelize-config");
 const helper = require("../services/helper");
 const config = require("../config/config");
-const { where } = require("sequelize");
 
 const addUserController = async (req, res, next) => {
   try {
@@ -20,7 +19,13 @@ const addUserController = async (req, res, next) => {
         phone_no: req.body.phone_no,
       });
       res.json({
-        usersCreate,
+        first_name: usersCreate.first_name,
+        last_name: usersCreate.last_name,
+        email: usersCreate.email,
+        user_name: usersCreate.user_name,
+        user_password: usersCreate.user_password,
+        phone_no: usersCreate.phone_no,
+        //usersCreate,
       });
     } else {
       return next({
@@ -30,7 +35,7 @@ const addUserController = async (req, res, next) => {
     }
   } catch (error) {
     console.log(error);
-    return res.send({
+    return res.json({
       message: error.errors.map((d) => d.message),
     });
   }
@@ -78,14 +83,18 @@ const loginController = async (req, res, next) => {
         );
 
         return res.json({
-          updateToken,
+          created_token,
         });
       }
-      return res.status(403).send("Username or Password doesnot match");
+      return res.status(403).json({
+        message: "Username or Password doesnot match",
+      });
     }
   } catch (error) {
     console.log("\n error...", error);
-    return res.send(error);
+    return res.json({
+      message: error,
+    });
   }
 };
 const accountViewController = async (req, res) => {
@@ -98,11 +107,13 @@ const accountViewController = async (req, res) => {
       logging: true,
     });
     return res.json({
-      searchUser,
+      user_name: searchUser.user_name,
     });
   } catch (error) {
     console.log("\n error...", error);
-    return res.send(error);
+    return res.json({
+      message: error,
+    });
   }
 };
 const updateUserController = async (req, res, next) => {
@@ -117,7 +128,7 @@ const updateUserController = async (req, res, next) => {
         message: "user not found",
       });
     } else {
-      const [rowsUpdated, [updatedUser]] = await models.users.update(
+      const updatedUser = await models.users.update(
         {
           first_name: req.body.first_name,
           last_name: req.body.last_name,
@@ -135,13 +146,13 @@ const updateUserController = async (req, res, next) => {
         }
       );
 
-      res.json({
-        updatedUser,
-      });
+      res.json(req.body);
     }
   } catch (error) {
     console.log("\n error...", error);
-    return res.send(error);
+    return res.json({
+      message: error,
+    });
   }
 };
 module.exports = {

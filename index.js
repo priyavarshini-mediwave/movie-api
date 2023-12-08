@@ -9,10 +9,15 @@ const urlencodedParser = bodyParser.urlencoded({ extended: false });
 const { errorHandler } = require("./middlewares/errorHandler.middleware");
 const { notfound } = require("./middlewares/notFound.middleware");
 const userRouter = require("./routes/user.routes");
+const movieRouter = require("./routes/movies.routes");
 const app = express();
 app.use(jsonParser);
 app.use(urlencodedParser);
+
+//Use Routes
 app.use("/", userRouter);
+app.use("/", movieRouter);
+//Use middlewares
 app.use(notfound);
 app.use(errorHandler);
 app.listen(config.port, config.host, () => {

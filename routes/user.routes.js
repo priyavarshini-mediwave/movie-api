@@ -18,10 +18,10 @@ router.post("/signup", validate(signUpSchema), addUserController);
 
 router.post("/login", validate(loginSchema), loginController);
 
-router.get("/user/", isAuthorised, accountViewController);
+router.get("/users/userInfo", isAuthorised, accountViewController);
 
 router.patch(
-  "/user/updateUser",
+  "/users/user/updateUser",
   isAuthorised,
   validate(updateUserSchema),
   updateUserController

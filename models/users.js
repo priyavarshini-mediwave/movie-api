@@ -68,6 +68,7 @@ module.exports = function model(sequelize, types) {
       }
     } catch (error) {
       console.log("\n Update user_password hash error:", error);
+      throw error;
     }
   });
   Users.associate = function (models) {
