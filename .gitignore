@@ -1,3 +1,5 @@
 node_modules
 .env
-package-lock.json
+
+/package-lock.json
+/home/trainee/Projects/sequelize/movie-api-backend/package-lock.json
