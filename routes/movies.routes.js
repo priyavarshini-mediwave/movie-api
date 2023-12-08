@@ -3,7 +3,10 @@ const {
   movieaddSchema,
   updatemovieSchema,
 } = require("../validations/insertMovie.schema");
-const { addMovieController } = require("../controllers/movie.controller");
+const {
+  addMovieController,
+  listMovieController,
+} = require("../controllers/movie.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
 const router = express.Router();
@@ -14,4 +17,5 @@ router.post(
   validate(movieaddSchema),
   addMovieController
 );
+router.get("/movies/list", listMovieController);
 module.exports = router;

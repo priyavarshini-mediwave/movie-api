@@ -1,6 +1,7 @@
 // const { Module } = require("module");
 // const config = require("../config/config");
 const { sequelize, models, Sequelize } = require("../config/sequelize-config");
+const rating = require("../models/rating");
 
 //const Op = Sequelize.Op;
 
@@ -42,12 +43,55 @@ const addMovieController = async (req, res, next) => {
   } catch (error) {
     console.log(error);
     return res.json({
-      message: error,
+      message: error.message,
+    });
+  }
+};
+const listMovieController = async (req, res, next) => {
+  try {
+    // const movieList = await models.movies.findAll();
+    // if (movieList) {
+    //   res.json(movieList);
+    // } else {
+    //   return next({
+    //     status: 400,
+    //     message: "No movie found",
+    //   });
+    // }
+    const moviesList = await models.movies.findAll({
+      attributes: ["id", "movie_name"],
+      logging: true,
+      include: [
+        {
+          as: "rating",
+          model: models.rating,
+          required: true,
+          // where: whereQuery,
+          attributes: [
+            [
+              Sequelize.fn("AVG", Sequelize.col("rating_value")),
+              "overall_rating",
+            ],
+            "id",
+          ],
+          group: ["id"],
+        },
+      ],
+      order: [["movie_name", "asc"]],
+    });
+    if (moviesList) {
+      res.json(moviesList);
+    }
+  } catch (error) {
+    console.log(error);
+    res.json({
+      message: error.message,
     });
   }
 };
 module.exports = {
   addMovieController,
+  listMovieController,
 };
 // const addMovie = await models.movies.create({
 //     movie_name: req.xop.movie_name,
