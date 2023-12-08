@@ -1,7 +1,7 @@
 const { DataTypes } = require("sequelize");
 module.exports = function model(sequelize, types) {
   const Rating = sequelize.define(
-    "movies",
+    "rating",
     {
       rating_id: {
         type: types.UUID,

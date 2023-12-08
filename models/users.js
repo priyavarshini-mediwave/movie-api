@@ -1,4 +1,5 @@
 const { DataTypes } = require("sequelize");
+const helper = require("../services/helper");
 module.exports = function model(sequelize, types) {
   const Users = sequelize.define(
     "users",
