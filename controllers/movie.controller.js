@@ -1,8 +1,8 @@
-const { Module } = require("module");
-const config = require("../config/config");
+// const { Module } = require("module");
+// const config = require("../config/config");
 const { sequelize, models, Sequelize } = require("../config/sequelize-config");
 
-const Op = Sequelize.Op;
+//const Op = Sequelize.Op;
 
 const addMovieController = async (req, res, next) => {
   try {

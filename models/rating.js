@@ -38,7 +38,7 @@ module.exports = function model(sequelize, types) {
     },
     {
       tableName: "rating",
-      timstamps: false,
+      timestamps: false,
     }
   );
   Rating.associate = function (models) {

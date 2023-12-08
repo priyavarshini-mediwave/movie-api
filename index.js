@@ -10,6 +10,7 @@ const { errorHandler } = require("./middlewares/errorHandler.middleware");
 const { notfound } = require("./middlewares/notFound.middleware");
 const userRouter = require("./routes/user.routes");
 const movieRouter = require("./routes/movies.routes");
+const ratingRouter = require("./routes/rating.routes");
 const app = express();
 app.use(jsonParser);
 app.use(urlencodedParser);
@@ -17,6 +18,7 @@ app.use(urlencodedParser);
 //Use Routes
 app.use("/", userRouter);
 app.use("/", movieRouter);
+app.use("/", ratingRouter);
 //Use middlewares
 app.use(notfound);
 app.use(errorHandler);
