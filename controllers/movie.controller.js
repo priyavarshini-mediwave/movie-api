@@ -60,25 +60,35 @@ const listMovieController = async (req, res, next) => {
     //   });
     // }
     const moviesList = await models.movies.findAll({
-      attributes: ["movies.id", "movies.movie_id", "movies.movie_name"],
+      //attributes: ["movies.id", "movies.movie_id", "movies.movie_name"],
       logging: true,
-      attributes: [
-        [
-          Sequelize.fn("AVG", Sequelize.col("rating.rating_value")),
-          "overall_rating",
-        ],
-        "movie_id",
-      ],
       include: [
         {
           as: "rating",
           model: models.rating,
           required: true,
           // where: whereQuery,
+          attributes: [],
+          // attributes: [
+          //   [
+          //     Sequelize.fn("AVG", Sequelize.col("rating.rating_value")),
+          //     "overall_rating",
+          //   ],
+          //   "movie_id",
+          // ],
 
           group: ["movie_id"],
         },
       ],
+      attributes: {
+        include: [
+          [
+            Sequelize.fn("AVG", Sequelize.col("rating_value")),
+            "overall_rating",
+          ],
+          "movie_id",
+        ],
+      },
 
       group: [
         "movies.id",
