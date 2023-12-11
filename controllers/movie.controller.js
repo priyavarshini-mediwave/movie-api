@@ -1,6 +1,7 @@
 // const { Module } = require("module");
 // const config = require("../config/config");
 const { sequelize, models, Sequelize } = require("../config/sequelize-config");
+const movies = require("../models/movies");
 const rating = require("../models/rating");
 
 //const Op = Sequelize.Op;
@@ -59,28 +60,38 @@ const listMovieController = async (req, res, next) => {
     //   });
     // }
     const moviesList = await models.movies.findAll({
-      attributes: ["id", "movie_name"],
+      attributes: ["movies.id", "movies.movie_id", "movies.movie_name"],
       logging: true,
+      attributes: [
+        [
+          Sequelize.fn("AVG", Sequelize.col("rating.rating_value")),
+          "overall_rating",
+        ],
+        "movie_id",
+      ],
       include: [
         {
           as: "rating",
           model: models.rating,
           required: true,
           // where: whereQuery,
-          attributes: [
-            [
-              Sequelize.fn("AVG", Sequelize.col("rating_value")),
-              "overall_rating",
-            ],
-            "id",
-          ],
-          group: ["id"],
+
+          group: ["movie_id"],
         },
+      ],
+
+      group: [
+        "movies.id",
+        "movies.movie_id",
+        "movies.movie_name",
+        "rating.rating_id",
+        "rating.id",
       ],
       order: [["movie_name", "asc"]],
     });
+    //console.log(moviesList);
     if (moviesList) {
-      res.json(moviesList);
+      res.send(moviesList);
     }
   } catch (error) {
     console.log(error);
@@ -89,6 +100,7 @@ const listMovieController = async (req, res, next) => {
     });
   }
 };
+
 module.exports = {
   addMovieController,
   listMovieController,
