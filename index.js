@@ -1,7 +1,7 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const { models } = require("./config/sequelize-config");
-
+const cors = require("cors");
 const config = require("./config/config");
 
 const jsonParser = bodyParser.json();
@@ -12,6 +12,7 @@ const userRouter = require("./routes/user.routes");
 const movieRouter = require("./routes/movies.routes");
 const ratingRouter = require("./routes/rating.routes");
 const app = express();
+app.use(cors());
 app.use(jsonParser);
 app.use(urlencodedParser);
 

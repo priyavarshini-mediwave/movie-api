@@ -48,6 +48,7 @@ const addMovieController = async (req, res, next) => {
     });
   }
 };
+
 const listMovieController = async (req, res, next) => {
   try {
     // const movieList = await models.movies.findAll();
