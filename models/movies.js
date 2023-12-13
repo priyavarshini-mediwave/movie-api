@@ -40,7 +40,7 @@ module.exports = function model(sequelize, types) {
   );
   Movies.associate = function (models) {
     Movies.belongsTo(models.users, {
-      as: "users",
+      as: "addedBy",
       foreignKey: "user_id",
       targetKey: "user_id",
     });

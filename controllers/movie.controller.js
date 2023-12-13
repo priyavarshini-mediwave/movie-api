@@ -48,73 +48,146 @@ const addMovieController = async (req, res, next) => {
     });
   }
 };
-
-const listMovieController = async (req, res, next) => {
+//Get All Movies
+const getAllMovieController = async (req, res, next) => {
   try {
-    // const movieList = await models.movies.findAll();
-    // if (movieList) {
-    //   res.json(movieList);
-    // } else {
-    //   return next({
-    //     status: 400,
-    //     message: "No movie found",
-    //   });
-    // }
-    const moviesList = await models.movies.findAll({
-      //attributes: ["movies.id", "movies.movie_id", "movies.movie_name"],
-      logging: true,
+    const getMovies = await models.movies.findAll({
+      attributes: ["movie_name", "release_year", "movie_desc"],
       include: [
         {
-          as: "rating",
           model: models.rating,
-          required: true,
-          // where: whereQuery,
-          attributes: [],
-          // attributes: [
-          //   [
-          //     Sequelize.fn("AVG", Sequelize.col("rating.rating_value")),
-          //     "overall_rating",
-          //   ],
-          //   "movie_id",
-          // ],
-
-          group: ["movie_id"],
+          as: "rating",
+          attributes: ["rating_value"],
         },
       ],
-      attributes: {
-        include: [
-          [
-            Sequelize.fn("AVG", Sequelize.col("rating_value")),
-            "overall_rating",
-          ],
-          "movie_id",
-        ],
-      },
-
-      group: [
-        "movies.id",
-        "movies.movie_id",
-        "movies.movie_name",
-        "rating.rating_id",
-        "rating.id",
-      ],
-      order: [["movie_name", "asc"]],
     });
-    //console.log(moviesList);
-    if (moviesList) {
-      res.send(moviesList);
-    }
+    const oneMoive = getMovies.map((m) => {
+      const overallRating = m.rating.length
+        ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
+          m.rating.length
+        : 0;
+      return {
+        movie_name: m.movie_name,
+        release_year: m.release_year,
+        movie_desc: m.movie_desc,
+        rating: overallRating,
+      };
+    });
+
+    res.json(oneMoive);
   } catch (error) {
-    console.log(error);
-    res.json({
+    return res.json({
       message: error.message,
     });
   }
 };
+//Get One movie
+const getOneMovieController = async (req, res, next) => {
+  try {
+    const getMovie = await models.movies.findOne({
+      attributes: ["movie_name"],
+      where: { movie_id: req.params.movie_id },
+      include: [
+        {
+          model: models.rating,
+          as: "rating",
+          attributes: ["rating_value"],
+          include: [
+            {
+              model: models.users,
+              as: "ratingDoneBy",
+              attributes: ["user_name"],
+            },
+          ],
+        },
+        {
+          model: models.users,
+          as: "addedBy",
+          attributes: ["user_name"],
+        },
+      ],
+      logging: true,
+    });
 
+    const ratings = getMovie.rating.map((rating) => ({
+      rating: rating.rating_value,
+      ratedBy: rating.ratingDoneBy.user_name,
+    }));
+
+    const overallRating = getMovie.rating.length
+      ? getMovie.rating.reduce(
+          (total, rating) => total + rating.rating_value,
+          0
+        ) / getMovie.rating.length
+      : 0;
+
+    const movieWithFormattedData = {
+      movieName: getMovie.movie_name,
+      addedBy: getMovie.addedBy.user_name,
+      ratings,
+      overallRating,
+    };
+
+    res.json({
+      movieWithFormattedData,
+    });
+  } catch (error) {
+    return res.json({
+      message: error.message,
+    });
+  }
+};
+// Update movie
+
+const updateMovieController = async (req, res, next) => {
+  try {
+    const searchMovie = await models.movies.findOne({
+      where: { movie_id: req.params.movie_id },
+      logging: true,
+    });
+    console.log("searchMovie", searchMovie);
+    if (req.decoded.user_id !== searchMovie.user_id) {
+      return next({
+        status: 400,
+        message: "You cannot edit this movie",
+      });
+    }
+    if (searchMovie === null) {
+      return next({
+        status: 400,
+        message: "Movie not found",
+      });
+    } else {
+      const updatedMovie = await models.movies.update(
+        {
+          movie_name: req.body.movie_name,
+          movie_desc: req.body.movie_desc,
+          release_year: req.body.release_year,
+        },
+        {
+          where: {
+            movie_id: req.params.movie_id,
+          },
+          returning: true,
+          // individualHooks: true,
+        }
+      );
+      if (updatedMovie) {
+        res.json(req.body);
+      }
+    }
+  } catch (error) {
+    console.log("\n error...", error);
+    return res.json({
+      message: error,
+    });
+  }
+};
 module.exports = {
   addMovieController,
-  listMovieController,
+  getAllMovieController,
+  getOneMovieController,
+  updateMovieController,
 };
 // const addMovie = await models.movies.create({
 //     movie_name: req.xop.movie_name,

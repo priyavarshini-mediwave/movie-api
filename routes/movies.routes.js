@@ -5,7 +5,9 @@ const {
 } = require("../validations/insertMovie.schema");
 const {
   addMovieController,
-  listMovieController,
+  getAllMovieController,
+  getOneMovieController,
+  updateMovieController,
 } = require("../controllers/movie.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -17,5 +19,16 @@ router.post(
   validate(movieaddSchema),
   addMovieController
 );
-router.get("/movies/list", listMovieController);
+router.get("/movies/list", isAuthorised, getAllMovieController);
+router.get(
+  "/movies/list/:movie_id",
+  isAuthorised,
+  validate(updatemovieSchema),
+  getOneMovieController
+);
+router.post(
+  "/movies/list/update/:movie_id",
+  isAuthorised,
+  updateMovieController
+);
 module.exports = router;

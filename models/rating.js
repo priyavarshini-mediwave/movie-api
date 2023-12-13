@@ -43,7 +43,7 @@ module.exports = function model(sequelize, types) {
   );
   Rating.associate = function (models) {
     Rating.belongsTo(models.users, {
-      as: "users",
+      as: "ratingDoneBy",
       foreignKey: "user_id",
       targetKey: "user_id",
     });
