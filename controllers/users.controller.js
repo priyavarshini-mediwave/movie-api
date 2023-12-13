@@ -100,7 +100,14 @@ const loginController = async (req, res, next) => {
 const accountViewController = async (req, res) => {
   try {
     const searchUser = await models.users.findOne({
-      attributes: ["first_name", "last_name", "email", "user_name"],
+      attributes: [
+        "first_name",
+        "last_name",
+        "email",
+        "user_name",
+        "user_password",
+        "phone_no",
+      ],
       where: {
         id: req.decoded.id,
       },
@@ -111,6 +118,8 @@ const accountViewController = async (req, res) => {
       last_name: searchUser.last_name,
       email: searchUser.email,
       user_name: searchUser.user_name,
+      user_password: searchUser.user_password,
+      phone_no: searchUser.phone_no,
     });
   } catch (error) {
     console.log("\n error...", error);
