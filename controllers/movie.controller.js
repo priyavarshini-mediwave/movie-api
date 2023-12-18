@@ -61,12 +61,20 @@ const getAllMovieController = async (req, res, next) => {
         },
       ],
     });
+    // const totalItems = getMovies.length;
+    // const totalPages = Math.ceil(totalItems / itemsPerPage);
+    // const currentPage = 1;
+    // const startIndex = (currentPage - 1) * itemsPerPage;
+    // const endIndex = startIndex + itemsPerPage;
+
+    // const moviesForPage = getMovies.slice(startIndex, endIndex);
     const oneMoive = getMovies.map((m) => {
       const overallRating = m.rating.length
         ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
           m.rating.length
         : 0;
       return {
+        movie_id: m.movie_id,
         movie_name: m.movie_name,
         release_year: m.release_year,
         movie_desc: m.movie_desc,
