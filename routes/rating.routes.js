@@ -6,7 +6,7 @@ const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
 const router = express.Router();
 router.post(
-  "/rating",
+  "/movies/:id/rating",
   isAuthorised,
   validate(ratingValueSchema),
   addRatingController
