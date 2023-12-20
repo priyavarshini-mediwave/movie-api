@@ -93,7 +93,13 @@ const getAllMovieController = async (req, res, next) => {
 const getOneMovieController = async (req, res, next) => {
   try {
     const getMovie = await models.movies.findOne({
-      attributes: ["movie_name"],
+      attributes: [
+        "movie_id",
+        "movie_name",
+        "movie_desc",
+        "release_year",
+        "user_id",
+      ],
       where: { movie_id: req.params.movie_id },
       include: [
         {
@@ -130,7 +136,10 @@ const getOneMovieController = async (req, res, next) => {
       : 0;
 
     const movieWithFormattedData = {
-      movieName: getMovie.movie_name,
+      movie_id: getMovie.movie_id,
+      movie_name: getMovie.movie_name,
+      movie_desc: getMovie.movie_desc,
+      release_year: getMovie.release_year,
       addedBy: getMovie.addedBy.user_name,
       ratings,
       overallRating,

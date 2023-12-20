@@ -20,15 +20,11 @@ router.post(
   addMovieController
 );
 router.get("/movies/list", isAuthorised, getAllMovieController);
-router.get(
-  "/movies/list/:movie_id",
-  isAuthorised,
-  validate(updatemovieSchema),
-  getOneMovieController
-);
+router.get("/movies/list/:movie_id", isAuthorised, getOneMovieController);
 router.post(
   "/movies/list/update/:movie_id",
   isAuthorised,
+  validate(updatemovieSchema),
   updateMovieController
 );
 module.exports = router;
