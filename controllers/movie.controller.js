@@ -49,46 +49,46 @@ const addMovieController = async (req, res, next) => {
   }
 };
 //Get All Movies
-const getAllMovieController = async (req, res, next) => {
-  try {
-    const getMovies = await models.movies.findAll({
-      attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
-      include: [
-        {
-          model: models.rating,
-          as: "rating",
-          attributes: ["rating_value"],
-        },
-      ],
-    });
-    // const totalItems = getMovies.length;
-    // const totalPages = Math.ceil(totalItems / itemsPerPage);
-    // const currentPage = 1;
-    // const startIndex = (currentPage - 1) * itemsPerPage;
-    // const endIndex = startIndex + itemsPerPage;
+// const getAllMovieController = async (req, res, next) => {
+//   try {
+//     const getMovies = await models.movies.findAll({
+//       attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
+//       include: [
+//         {
+//           model: models.rating,
+//           as: "rating",
+//           attributes: ["rating_value"],
+//         },
+//       ],
+//     });
+//     // const totalItems = getMovies.length;
+//     // const totalPages = Math.ceil(totalItems / itemsPerPage);
+//     // const currentPage = 1;
+//     // const startIndex = (currentPage - 1) * itemsPerPage;
+//     // const endIndex = startIndex + itemsPerPage;
 
-    // const moviesForPage = getMovies.slice(startIndex, endIndex);
-    const oneMoive = getMovies.map((m) => {
-      const overallRating = m.rating.length
-        ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
-          m.rating.length
-        : 0;
-      return {
-        movie_id: m.movie_id,
-        movie_name: m.movie_name,
-        release_year: m.release_year,
-        movie_desc: m.movie_desc,
-        rating: overallRating,
-      };
-    });
+//     // const moviesForPage = getMovies.slice(startIndex, endIndex);
+//     const oneMoive = getMovies.map((m) => {
+//       const overallRating = m.rating.length
+//         ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
+//           m.rating.length
+//         : 0;
+//       return {
+//         movie_id: m.movie_id,
+//         movie_name: m.movie_name,
+//         release_year: m.release_year,
+//         movie_desc: m.movie_desc,
+//         rating: overallRating,
+//       };
+//     });
 
-    res.json(oneMoive);
-  } catch (error) {
-    return res.json({
-      message: error.message,
-    });
-  }
-};
+//     res.json(oneMoive);
+//   } catch (error) {
+//     return res.json({
+//       message: error.message,
+//     });
+//   }
+// };
 //Get One movie
 const getOneMovieController = async (req, res, next) => {
   try {
@@ -200,6 +200,53 @@ const updateMovieController = async (req, res, next) => {
     });
   }
 };
+
+const getAllMovieController = async (req, res, next) => {
+  try {
+    const { page = 1, itemsPerPage = 10 } = req.query;
+
+    const offset = (page - 1) * itemsPerPage;
+
+    const { count, rows: getMovies } = await models.movies.findAndCountAll({
+      attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
+      include: [
+        {
+          model: models.rating,
+          as: "rating",
+          attributes: ["rating_value"],
+        },
+      ],
+      offset,
+      limit: itemsPerPage,
+      distinct: true,
+    });
+
+    const oneMoive = getMovies.map((m) => {
+      const overallRating = m.rating.length
+        ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
+          m.rating.length
+        : 0;
+
+      return {
+        movie_id: m.movie_id,
+        movie_name: m.movie_name,
+        release_year: m.release_year,
+        movie_desc: m.movie_desc,
+        rating: overallRating,
+      };
+    });
+    console.log("count", count);
+    res.json({
+      totalItems: count,
+      movies: oneMoive,
+    });
+  } catch (error) {
+    return res.json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addMovieController,
   getAllMovieController,
