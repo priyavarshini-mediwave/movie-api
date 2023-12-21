@@ -263,11 +263,30 @@ const getAllMovieController = async (req, res, next) => {
   }
 };
 
+const getMovieToUpdateController = async (req, res, next) => {
+  try {
+    const movieToUpdate = await models.movies.findOne({
+      where: { movie_id: req.params.movie_id },
+      logging: true,
+    });
+    console.log(movieToUpdate);
+    if (movieToUpdate) {
+      res.json(movieToUpdate);
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: error.message,
+    });
+  }
+};
+
 module.exports = {
   addMovieController,
   getAllMovieController,
   getOneMovieController,
   updateMovieController,
+  getMovieToUpdateController,
 };
 // const addMovie = await models.movies.create({
 //     movie_name: req.xop.movie_name,
@@ -275,3 +294,9 @@ module.exports = {
 //     release_year: req.xop.release_year,
 //     user_id: req.decoded.id,
 //   });
+// try {
+//   const searchMovie = await models.movies.findOne({
+//     where: { movie_id: req.params.movie_id },
+//     logging: true,
+//   });
+//   console.log("searchMovie", searchMovie);

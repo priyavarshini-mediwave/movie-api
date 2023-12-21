@@ -8,6 +8,7 @@ const {
   getAllMovieController,
   getOneMovieController,
   updateMovieController,
+  getMovieToUpdateController,
 } = require("../controllers/movie.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -26,5 +27,10 @@ router.post(
   isAuthorised,
   validate(updatemovieSchema),
   updateMovieController
+);
+router.get(
+  "/movies/list/update/:movie_id",
+  isAuthorised,
+  getMovieToUpdateController
 );
 module.exports = router;
