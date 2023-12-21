@@ -4,7 +4,7 @@ const { sequelize, models, Sequelize } = require("../config/sequelize-config");
 const movies = require("../models/movies");
 const rating = require("../models/rating");
 
-//const Op = Sequelize.Op;
+const Op = Sequelize.Op;
 
 const addMovieController = async (req, res, next) => {
   try {
@@ -202,6 +202,13 @@ const updateMovieController = async (req, res, next) => {
 };
 
 const getAllMovieController = async (req, res, next) => {
+  let whereQuery = {};
+  if (req.query.search) {
+    searchTerm = req.query.search;
+    whereQuery.movie_name = {
+      [Op.iLike]: `%${searchTerm}%`,
+    };
+  }
   try {
     const { page = 1, itemsPerPage = 10 } = req.query;
 
@@ -209,6 +216,7 @@ const getAllMovieController = async (req, res, next) => {
 
     const { count, rows: getMovies } = await models.movies.findAndCountAll({
       attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
+      where: whereQuery,
       include: [
         {
           model: models.rating,
