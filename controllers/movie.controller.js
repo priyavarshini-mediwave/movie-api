@@ -203,11 +203,17 @@ const updateMovieController = async (req, res, next) => {
 
 const getAllMovieController = async (req, res, next) => {
   let whereQuery = {};
+  let sortName;
   if (req.query.search) {
     searchTerm = req.query.search;
     whereQuery.movie_name = {
       [Op.iLike]: `%${searchTerm}%`,
     };
+  }
+  if (req.query.sortMovie) {
+    console.log(req.query.sortMovie);
+    sortName = req.query.sortMovie;
+    console.log(sortName);
   }
   try {
     const { page = 1, itemsPerPage = 10 } = req.query;
@@ -217,6 +223,8 @@ const getAllMovieController = async (req, res, next) => {
     const { count, rows: getMovies } = await models.movies.findAndCountAll({
       attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
       where: whereQuery,
+      order: [["movie_name", sortName ? sortName : "DESC"]],
+      logging: true,
       include: [
         {
           model: models.rating,
