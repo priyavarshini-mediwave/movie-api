@@ -1,0 +1,381 @@
+{
+	"info": {
+		"_postman_id": "4262f903-3361-4eee-86f7-f66abcb86439",
+		"name": "movie-api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "29296444",
+		"_collection_link": "https://bold-sunset-815859.postman.co/workspace/sample~b58f5d77-de74-43b0-b5a3-808b96c301a1/collection/29296444-4262f903-3361-4eee-86f7-f66abcb86439?action=share&source=collection_link&creator=29296444"
+	},
+	"item": [
+		{
+			"name": "add user",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"first_name\":\"Priya\",\n        \"last_name\": \"Varshini\",\n        \"email\": \"Priya@gmail.com\",\n        \"user_name\": \"Priya@12345\",\n        \"user_password\": \"Priya@12345\",\n        \"phone_no\": \"7530124689\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/signup",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"signup"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "user login to generate token",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var res = JSON.parse(responseBody);",
+							"postman.setEnvironmentVariable(\"access_token\", res.created_token);"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"email\": \"varsha@gmail.com\",\n     \"user_password\": \"varsha@12345\"\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "view account using token",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:3456/users/userInfo",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"users",
+						"userInfo"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update user using token",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6IjgwOTg5NzU5LTI2MzQtNDY3NS1hNTY5LTAzOWIzMWY5NzYzMyIsInVzZXJfbmFtZSI6IlByaXlhQDEyMzQ1NiIsImlhdCI6MTcwMjQ2NjU3OSwiZXhwIjoxNzAyNDcwMTc5fQ.TTxSov0DnWxqjfNmUEFz-qcVu_X5UTwppb3Wp865mQY",
+							"type": "string"
+						}
+					]
+				},
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n      \"user_name\":\"varsha@gmail.com\",\n      \"user_password\":\"varsha@12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/users/user/updateUser",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"users",
+						"user",
+						"updateUser"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add Movie",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"movie_name\": \"Iron Man\",\n        \"movie_desc\": \"The First MCU Movie\",\n        \"release_year\": \"2009\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/addMovie",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"addMovie"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "add Rating",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6IjgwOTg5NzU5LTI2MzQtNDY3NS1hNTY5LTAzOWIzMWY5NzYzMyIsInVzZXJfbmFtZSI6InZhcnNoYUBnbWFpbC5jb20iLCJpYXQiOjE3MDMwNDk4MTMsImV4cCI6MTcwMzA1MzQxM30.L99HvscmwRJ3KEfkQEwOim4VLMuqo5b7lnuPkH0KHGo",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{ \n  \"rating_value\"  : 4\n\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/movies/d3374dfc-fd41-4319-93f3-d4263be56da8/rating",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"d3374dfc-fd41-4319-93f3-d4263be56da8",
+						"rating"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "list all movies",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3456/movies/list?sortMovie=DESC",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"list"
+					],
+					"query": [
+						{
+							"key": "search",
+							"value": "v",
+							"disabled": true
+						},
+						{
+							"key": "sortMovie",
+							"value": "DESC"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "fetch one movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6IjgwOTg5NzU5LTI2MzQtNDY3NS1hNTY5LTAzOWIzMWY5NzYzMyIsInVzZXJfbmFtZSI6InZhcnNoYUBnbWFpbC5jb20iLCJpYXQiOjE3MDMwNTczOTgsImV4cCI6MTcwMzA2MDk5OH0.YqQJMKbgUtQSrL3lAxDz2M2XbvlfCDg0-lcsk_o2swg",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3456/movies/list/d3374dfc-fd41-4319-93f3-d4263be56da8",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"list",
+						"d3374dfc-fd41-4319-93f3-d4263be56da8"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "update movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n   \n          \"movie_desc\": \"The great war that marks the end of MCU phase 3\"\n}\n         ",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/movies/update/6f0d79b1-d0e6-426f-8d07-e2ce650b03a5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"update",
+						"6f0d79b1-d0e6-426f-8d07-e2ce650b03a5"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "get movie to update",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3456/movies/update/6f0d79b1-d0e6-426f-8d07-e2ce650b03a5",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"update",
+						"6f0d79b1-d0e6-426f-8d07-e2ce650b03a5"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
