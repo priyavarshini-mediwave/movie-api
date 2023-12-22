@@ -48,47 +48,7 @@ const addMovieController = async (req, res, next) => {
     });
   }
 };
-//Get All Movies
-// const getAllMovieController = async (req, res, next) => {
-//   try {
-//     const getMovies = await models.movies.findAll({
-//       attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
-//       include: [
-//         {
-//           model: models.rating,
-//           as: "rating",
-//           attributes: ["rating_value"],
-//         },
-//       ],
-//     });
-//     // const totalItems = getMovies.length;
-//     // const totalPages = Math.ceil(totalItems / itemsPerPage);
-//     // const currentPage = 1;
-//     // const startIndex = (currentPage - 1) * itemsPerPage;
-//     // const endIndex = startIndex + itemsPerPage;
 
-//     // const moviesForPage = getMovies.slice(startIndex, endIndex);
-//     const oneMoive = getMovies.map((m) => {
-//       const overallRating = m.rating.length
-//         ? m.rating.reduce((total, rating) => total + rating.rating_value, 0) /
-//           m.rating.length
-//         : 0;
-//       return {
-//         movie_id: m.movie_id,
-//         movie_name: m.movie_name,
-//         release_year: m.release_year,
-//         movie_desc: m.movie_desc,
-//         rating: overallRating,
-//       };
-//     });
-
-//     res.json(oneMoive);
-//   } catch (error) {
-//     return res.json({
-//       message: error.message,
-//     });
-//   }
-// };
 //Get One movie
 const getOneMovieController = async (req, res, next) => {
   try {
@@ -198,6 +158,7 @@ const updateMovieController = async (req, res, next) => {
     return res.json({
       message: error,
     });
+    //return error;
   }
 };
 
@@ -288,15 +249,3 @@ module.exports = {
   updateMovieController,
   getMovieToUpdateController,
 };
-// const addMovie = await models.movies.create({
-//     movie_name: req.xop.movie_name,
-//     movie_desc: req.xop.movie_desc,
-//     release_year: req.xop.release_year,
-//     user_id: req.decoded.id,
-//   });
-// try {
-//   const searchMovie = await models.movies.findOne({
-//     where: { movie_id: req.params.movie_id },
-//     logging: true,
-//   });
-//   console.log("searchMovie", searchMovie);
