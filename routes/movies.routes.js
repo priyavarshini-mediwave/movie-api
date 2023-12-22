@@ -23,13 +23,13 @@ router.post(
 router.get("/movies/list", isAuthorised, getAllMovieController);
 router.get("/movies/list/:movie_id", isAuthorised, getOneMovieController);
 router.post(
-  "/movies/list/update/:movie_id",
+  "/movies/update/:movie_id",
   isAuthorised,
   validate(updatemovieSchema),
   updateMovieController
 );
 router.get(
-  "/movies/list/update/:movie_id",
+  "/movies/update/:movie_id",
   isAuthorised,
   getMovieToUpdateController
 );
