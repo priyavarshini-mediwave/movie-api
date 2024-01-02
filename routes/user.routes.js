@@ -3,12 +3,14 @@ const {
   signUpSchema,
   updateUserSchema,
   loginSchema,
+  updatePasswordSchema,
 } = require("../validations/authentication.schema");
 const {
   addUserController,
   loginController,
   accountViewController,
   updateUserController,
+  updateUserPasswordController,
 } = require("../controllers/users.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -26,5 +28,10 @@ router.patch(
   validate(updateUserSchema),
   updateUserController
 );
-
+router.patch(
+  "/users/user/updatePassword",
+  isAuthorised,
+  validate(updatePasswordSchema),
+  updateUserPasswordController
+);
 module.exports = router;
