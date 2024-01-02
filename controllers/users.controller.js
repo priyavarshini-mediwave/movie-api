@@ -179,6 +179,11 @@ const updateUserPasswordController = async (req, res, next) => {
         status: 400,
         message: "User not found",
       });
+    } else if (req.body.old_password === req.body.new_password) {
+      return next({
+        status: 400,
+        message: "Old password and New password cannot be the same",
+      });
     } else {
       const passwordMatch = await helper.comparePassword(
         req.body.old_password,
