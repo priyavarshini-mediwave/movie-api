@@ -54,7 +54,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"varsha@gmail.com\",\n     \"user_password\": \"varsha@12345\"\n\n}",
+					"raw": "{\n    \"email\": \"varsha@gmail.com\",\n     \"user_password\": \"varsha@1234\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -86,7 +86,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "{{access_token}}",
+							"value": "",
 							"type": "string"
 						}
 					]
@@ -412,6 +412,45 @@
 						"users",
 						"user",
 						"updatePassword"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "send test mail",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \"email\":\"varsha@gmail.com\",\n    \"to\":\"priyavarshini@mindwaveventures.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/users/test-mail",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"users",
+						"test-mail"
 					]
 				}
 			},
