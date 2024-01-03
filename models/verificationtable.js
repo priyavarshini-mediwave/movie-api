@@ -18,7 +18,7 @@ module.exports = function model(sequelize, types) {
         allowNull: false,
       },
       expiresAt: {
-        type: types.INTEGER,
+        type: types.BIGINT,
         allowNull: false,
       },
       user_id: {

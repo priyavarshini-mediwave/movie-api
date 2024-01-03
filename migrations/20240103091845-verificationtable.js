@@ -26,7 +26,7 @@ module.exports = {
         allowNull: false,
       },
       expiresAt: {
-        type: Sequelize.INTEGER,
+        type: Sequelize.BIGINT,
         allowNull: false,
       },
 
