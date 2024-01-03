@@ -11,8 +11,8 @@ const {
   accountViewController,
   updateUserController,
   updateUserPasswordController,
-  mailController,
 } = require("../controllers/users.controller");
+const { mailController } = require("../controllers/verification.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
 const router = express.Router();

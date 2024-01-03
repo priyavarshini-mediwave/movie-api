@@ -3,7 +3,7 @@
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("rating", {
+    await queryInterface.createTable("verificationtable", {
       id: {
         type: Sequelize.INTEGER,
         allowNull: false,
@@ -11,26 +11,19 @@ module.exports = {
         autoIncrement: true,
         unique: true,
       },
-      rating_id: {
+      verify_id: {
         type: Sequelize.UUID,
         defaultValue: Sequelize.UUIDV4,
         primarykey: true,
         unique: true,
       },
-      rating_value: {
-        type: Sequelize.INTEGER,
+      verification_type: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
-      movie_id: {
-        type: Sequelize.UUID,
-        references: {
-          model: {
-            tableName: "movies",
-          },
-          key: "movie_id",
-        },
+      otp: {
+        type: Sequelize.INTEGER,
         allowNull: false,
-        onDelete: "CASCADE",
       },
       user_id: {
         type: Sequelize.UUID,
@@ -47,6 +40,6 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("rating");
+    await queryInterface.dropTable("verificationtable");
   },
 };
