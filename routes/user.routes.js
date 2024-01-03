@@ -35,5 +35,5 @@ router.patch(
   validate(updatePasswordSchema),
   updateUserPasswordController
 );
-router.post("/users/test-mail", isAuthorised, mailController);
+router.post("/users/test-mail", mailController);
 module.exports = router;
