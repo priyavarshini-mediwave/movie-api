@@ -11,6 +11,7 @@ const {
   accountViewController,
   updateUserController,
   updateUserPasswordController,
+  mailController,
 } = require("../controllers/users.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -34,4 +35,5 @@ router.patch(
   validate(updatePasswordSchema),
   updateUserPasswordController
 );
+router.post("/users/test-mail", isAuthorised, mailController);
 module.exports = router;

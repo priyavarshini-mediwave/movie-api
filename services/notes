@@ -1,5 +1,14 @@
-pageNo - 1,2,3
-itemsPerPage - 10
-sortField - 
-sortOrder - ASC,DESC
-search - 
+pageNo - 1, 2, 3;
+itemsPerPage - 10;
+sortField - sortOrder - ASC, DESC;
+search;
+
+// function to create a random number
+// function generateRandomNumber() {
+//     var minm = 1000;
+//     var maxm = 9999;
+//     return Math.floor(Math
+//     .random() * (maxm - minm + 1)) + minm;
+// }
+// let output = generateRandomNumber();
+// console.log(output);
