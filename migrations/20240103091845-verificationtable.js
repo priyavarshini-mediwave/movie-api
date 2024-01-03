@@ -25,6 +25,11 @@ module.exports = {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
+      expiresAt: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+      },
+
       user_id: {
         type: Sequelize.UUID,
         references: {
