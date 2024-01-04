@@ -146,7 +146,6 @@ const updateMovieController = async (req, res, next) => {
             movie_id: req.params.movie_id,
           },
           returning: true,
-          // individualHooks: true,
         }
       );
       if (updatedMovie) {
@@ -242,10 +241,52 @@ const getMovieToUpdateController = async (req, res, next) => {
   }
 };
 
+const deleteMovieController = async (req, res, next) => {
+  try {
+    const searchMovie = await models.movies.findOne({
+      where: { movie_id: req.params.movie_id },
+      logging: true,
+    });
+    console.log("searchMovie", searchMovie);
+    if (req.decoded.user_id !== searchMovie.user_id) {
+      return next({
+        status: 400,
+        message: "You cannot delete this movie",
+      });
+    }
+    if (searchMovie === null) {
+      return next({
+        status: 400,
+        message: "Movie not found",
+      });
+    } else {
+      const deletedMovie = await models.movies.destroy({
+        where: {
+          movie_id: req.params.movie_id,
+        },
+        returning: true,
+      });
+      if (deletedMovie) {
+        res.json({
+          deletedMovie: deletedMovie,
+          message: `Movie ${searchMovie.movie_name} deleted successfully `,
+        });
+      }
+    }
+  } catch (error) {
+    console.log("\n error...", error);
+    return res.json({
+      message: error,
+    });
+    //return error;
+  }
+};
+
 module.exports = {
   addMovieController,
   getAllMovieController,
   getOneMovieController,
   updateMovieController,
   getMovieToUpdateController,
+  deleteMovieController,
 };

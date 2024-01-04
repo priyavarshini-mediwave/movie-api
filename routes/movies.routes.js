@@ -9,6 +9,7 @@ const {
   getOneMovieController,
   updateMovieController,
   getMovieToUpdateController,
+  deleteMovieController,
 } = require("../controllers/movie.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -33,4 +34,5 @@ router.get(
   isAuthorised,
   getMovieToUpdateController
 );
+router.delete("/movies/delete/:movie_id", isAuthorised, deleteMovieController);
 module.exports = router;
