@@ -44,7 +44,11 @@ const mailController = async (req, res, next) => {
           if (error) console.log("\n mail error..", error);
           return console.log("\n success...", info);
         });
-        return res.json("Mail sent");
+        console.log("verifyCreate", verifyCreate);
+        return res.json({
+          response: verifyCreate,
+          message: "Mail sent",
+        });
       } else {
         return next({
           status: 400,
@@ -64,6 +68,56 @@ const mailController = async (req, res, next) => {
     });
   }
 };
+const otpCheckController = async (req, res, next) => {
+  try {
+    const searchUser = await models.verificationtable.findOne({
+      where: {
+        user_id: req.params.user_id,
+      },
+    });
+    console.log(searchUser);
+    console.log(searchUser.otp);
+    const otpValue = searchUser.otp;
+    const userOtp = req.body.otp;
+    console.log("userOtp", userOtp);
+    if (otpValue === userOtp) {
+      if (new Date().getTime() > searchUser.expiresAt) {
+        const removeOtp = await models.verificationtable.destroy({
+          where: {
+            user_id: req.params.user_id,
+          },
+        });
+        console.log("removeOtponExpiry", removeOtp);
+        return next({
+          status: 400,
+          message: "OTP expired",
+        });
+      } else {
+        const removeOtp = await models.verificationtable.destroy({
+          where: {
+            user_id: req.params.user_id,
+          },
+        });
+        console.log("removeOtp", removeOtp);
+        return res.json({
+          deletedValue: removeOtp,
+          message: "OTP verified Successfully",
+        });
+      }
+    } else {
+      return next({
+        status: 400,
+        message: "OTP invalid",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: error,
+    });
+  }
+};
 module.exports = {
   mailController,
+  otpCheckController,
 };

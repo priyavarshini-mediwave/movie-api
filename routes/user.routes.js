@@ -12,7 +12,10 @@ const {
   updateUserController,
   updateUserPasswordController,
 } = require("../controllers/users.controller");
-const { mailController } = require("../controllers/verification.controller");
+const {
+  mailController,
+  otpCheckController,
+} = require("../controllers/verification.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
 const router = express.Router();
@@ -36,4 +39,5 @@ router.patch(
   updateUserPasswordController
 );
 router.post("/users/test-mail", mailController);
+router.delete("/users/otp-validation/:user_id", otpCheckController);
 module.exports = router;
