@@ -117,7 +117,52 @@ const otpCheckController = async (req, res, next) => {
     });
   }
 };
+const forgotPasswordController = async (req, res, next) => {
+  try {
+    const searchUser = await models.users.findOne({
+      where: {
+        user_id: req.params.user_id,
+      },
+    });
+    if (searchUser) {
+      const updatedPassword = await models.users.update(
+        {
+          user_password: req.body.new_password,
+        },
+        {
+          where: {
+            user_id: req.params.user_id,
+          },
+          returning: true,
+          individualHooks: true,
+        }
+      );
+      console.log("updatedForgotPassword:", updatedPassword);
+      if (updatedPassword) {
+        return res.json({
+          message: "Password Updated Successfully",
+        });
+      } else {
+        return next({
+          status: 400,
+          message: "Password not updated",
+        });
+      }
+    } else {
+      return next({
+        status: 400,
+        message: "No user found",
+      });
+    }
+  } catch (error) {
+    console.log(error);
+    return res.json({
+      message: error,
+    });
+  }
+};
 module.exports = {
   mailController,
   otpCheckController,
+  forgotPasswordController,
 };

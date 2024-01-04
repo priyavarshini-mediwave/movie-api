@@ -15,6 +15,7 @@ const {
 const {
   mailController,
   otpCheckController,
+  forgotPasswordController,
 } = require("../controllers/verification.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
@@ -38,6 +39,7 @@ router.patch(
   validate(updatePasswordSchema),
   updateUserPasswordController
 );
-router.post("/users/test-mail", mailController);
+router.post("/users/send-otp-mail", mailController);
 router.delete("/users/otp-validation/:user_id", otpCheckController);
+router.patch("/users/forgot-passwordChange/:user_id", forgotPasswordController);
 module.exports = router;
