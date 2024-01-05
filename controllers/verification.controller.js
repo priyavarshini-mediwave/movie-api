@@ -141,7 +141,7 @@ const forgotPasswordController = async (req, res, next) => {
             user_id: req.params.user_id,
           },
           returning: true,
-          individualHooks: true,
+          //   individualHooks: true,
         }
       );
       console.log("updatedForgotPassword:", updatedPassword);
