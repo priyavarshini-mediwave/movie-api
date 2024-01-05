@@ -13,7 +13,7 @@ module.exports = {
           return res.status(401).send("unauthorised not decoded");
         }
         req.decoded = decoded;
-        console.log(decoded);
+        console.log("decoded", decoded);
         return next();
       }
       return res.status(401).json({ message: "unauthorised or no token" });

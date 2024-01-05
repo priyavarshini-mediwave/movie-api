@@ -33,7 +33,7 @@ const mailController = async (req, res, next) => {
       if (verifyCreate) {
         const options = {
           from: `Sender<${mailConfig.email}>`,
-          to: req.body.to,
+          to: req.body.email,
           subject: "Forgot Password Verification OTP",
           // text: 'test content', // plain text body
           html: `<p> Your OTP to change password ${otp}.</p><p>Otp will expire in 5 minutes</p> 
@@ -75,45 +75,52 @@ const otpCheckController = async (req, res, next) => {
         user_id: req.params.user_id,
       },
     });
-    console.log(searchUser);
-    console.log(searchUser.otp);
+    // console.log(searchUser);
+    // console.log(searchUser.otp);
     const otpValue = searchUser.otp;
     const userOtp = req.body.otp;
-    console.log("userOtp", userOtp);
-    if (otpValue === userOtp) {
-      if (new Date().getTime() > searchUser.expiresAt) {
-        const removeOtp = await models.verificationtable.destroy({
-          where: {
-            user_id: req.params.user_id,
-          },
-        });
-        console.log("removeOtponExpiry", removeOtp);
+    //console.log("userOtp", userOtp);
+    if (searchUser) {
+      if (otpValue === userOtp) {
+        if (new Date().getTime() > searchUser.expiresAt) {
+          const removeOtp = await models.verificationtable.destroy({
+            where: {
+              user_id: req.params.user_id,
+            },
+          });
+          console.log("removeOtponExpiry", removeOtp);
+          return next({
+            status: 400,
+            message: "OTP expired",
+          });
+        } else {
+          const removeOtp = await models.verificationtable.destroy({
+            where: {
+              user_id: req.params.user_id,
+            },
+          });
+          console.log("removeOtp", removeOtp);
+          return res.json({
+            deletedValue: searchUser,
+            message: "OTP verified Successfully",
+          });
+        }
+      } else {
         return next({
           status: 400,
-          message: "OTP expired",
-        });
-      } else {
-        const removeOtp = await models.verificationtable.destroy({
-          where: {
-            user_id: req.params.user_id,
-          },
-        });
-        console.log("removeOtp", removeOtp);
-        return res.json({
-          deletedValue: removeOtp,
-          message: "OTP verified Successfully",
+          message: "OTP invalid",
         });
       }
     } else {
       return next({
         status: 400,
-        message: "OTP invalid",
+        message: "User Not found",
       });
     }
   } catch (error) {
-    console.log(error);
+    console.log("error:", error);
     return res.json({
-      message: error,
+      message: error.message,
     });
   }
 };

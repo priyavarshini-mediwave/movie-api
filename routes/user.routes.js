@@ -40,6 +40,6 @@ router.patch(
   updateUserPasswordController
 );
 router.post("/users/send-otp-mail", mailController);
-router.delete("/users/otp-validation/:user_id", otpCheckController);
+router.post("/users/otp-validation/:user_id", otpCheckController);
 router.patch("/users/forgot-passwordChange/:user_id", forgotPasswordController);
 module.exports = router;
