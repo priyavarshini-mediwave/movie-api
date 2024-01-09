@@ -19,6 +19,7 @@ const {
 } = require("../controllers/verification.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
+
 const router = express.Router();
 
 router.post("/signup", validate(signUpSchema), addUserController);
