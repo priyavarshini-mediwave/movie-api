@@ -61,6 +61,7 @@ const getOneMovieController = async (req, res, next) => {
         "movie_desc",
         "release_year",
         "user_id",
+        "movie_img_path",
       ],
       where: { movie_id: req.params.movie_id },
       include: [
@@ -102,6 +103,7 @@ const getOneMovieController = async (req, res, next) => {
       movie_name: getMovie.movie_name,
       movie_desc: getMovie.movie_desc,
       release_year: getMovie.release_year,
+      movie_img_path: getMovie.movie_img_path,
       addedBy: getMovie.addedBy.user_name,
       ratings,
       overallRating,
