@@ -21,7 +21,7 @@ const addMovieController = async (req, res, next) => {
         movie_desc: req.xop.movie_desc,
         release_year: req.xop.release_year,
         user_id: req.decoded.user_id,
-        movie_img_path: req.file.path,
+        movie_img_path: req.file.filename,
       });
       if (createMovie) {
         res.json({
