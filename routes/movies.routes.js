@@ -13,11 +13,13 @@ const {
 } = require("../controllers/movie.controller");
 const { validate } = require("../middlewares/validate.middleware");
 const { isAuthorised } = require("../middlewares/authorisation.middleware");
+const { multerupload } = require("../middlewares/multerupload.middleware");
 const router = express.Router();
 
 router.post(
   "/movies",
   isAuthorised,
+  multerupload("").single("file"),
   validate(movieaddSchema),
   addMovieController
 );

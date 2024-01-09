@@ -32,7 +32,13 @@ module.exports = function model(sequelize, types) {
         allowNull: false,
         onDelete: "CASCADE",
       },
+      movie_img_path: {
+        type: DataTypes.TEXT,
+        defaultValue: "",
+        allowNull: true,
+      },
     },
+
     {
       tableName: "movies",
       timestamps: false,

@@ -17,6 +17,7 @@ app.use(cors());
 app.use(jsonParser);
 app.use(urlencodedParser);
 app.use("/uploads", express.static(__dirname + "/uploads"));
+//app.use('/public', express.static(path.join(__dirname, 'public')));
 //Use Routes
 app.use("/", userRouter);
 app.use("/", movieRouter);

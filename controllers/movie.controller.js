@@ -21,6 +21,7 @@ const addMovieController = async (req, res, next) => {
         movie_desc: req.xop.movie_desc,
         release_year: req.xop.release_year,
         user_id: req.decoded.user_id,
+        movie_img_path: req.file.path,
       });
       if (createMovie) {
         res.json({
@@ -28,6 +29,7 @@ const addMovieController = async (req, res, next) => {
           movie_desc: createMovie.movie_desc,
           release_year: createMovie.release_year,
           user_id: createMovie.user_id,
+          movie_img_path: createMovie.movie_img_path,
         });
       } else {
         return next({
@@ -181,7 +183,13 @@ const getAllMovieController = async (req, res, next) => {
     const offset = (page - 1) * itemsPerPage;
 
     const { count, rows: getMovies } = await models.movies.findAndCountAll({
-      attributes: ["movie_id", "movie_name", "release_year", "movie_desc"],
+      attributes: [
+        "movie_id",
+        "movie_name",
+        "release_year",
+        "movie_desc",
+        "movie_img_path",
+      ],
       where: whereQuery,
       order: [["movie_name", sortName ? sortName : "DESC"]],
       logging: true,
@@ -209,6 +217,7 @@ const getAllMovieController = async (req, res, next) => {
         release_year: m.release_year,
         movie_desc: m.movie_desc,
         rating: overallRating,
+        movie_img_path: m.movie_img_path,
       };
     });
     console.log("count", count);
