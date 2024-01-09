@@ -54,7 +54,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"varsha@gmail.com\",\n     \"user_password\": \"varsha@1234\"\n\n}",
+					"raw": "{\n    \"email\": \"Vishnu@gmail.com\",\n     \"user_password\": \"Vishnu@12345\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -418,7 +418,39 @@
 			"response": []
 		},
 		{
-			"name": "send test mail",
+			"name": "generate otp and send otp in mail",
+			"request": {
+				"auth": {
+					"type": "noauth"
+				},
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{   \n    \"email\":\"priyavarshini@mindwaveventures.com\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/users/send-otp-mail",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"users",
+						"send-otp-mail"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "otp validation",
 			"request": {
 				"auth": {
 					"type": "bearer",
@@ -434,7 +466,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{   \"email\":\"varsha@gmail.com\",\n    \"to\":\"priyavarshini@mindwaveventures.com\"\n}",
+					"raw": "{\n    \"otp\":5977\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -442,7 +474,7 @@
 					}
 				},
 				"url": {
-					"raw": "http://localhost:3456/users/test-mail",
+					"raw": "http://localhost:3456/users/otp-validation/480b71d8-e475-41f2-afea-d88834aa8165",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -450,7 +482,69 @@
 					"port": "3456",
 					"path": [
 						"users",
-						"test-mail"
+						"otp-validation",
+						"480b71d8-e475-41f2-afea-d88834aa8165"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "change password on forgot password",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"new_password\": \"varsha@12345\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3456/users/forgot-passwordChange/80989759-2634-4675-a569-039b31f97633",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"users",
+						"forgot-passwordChange",
+						"80989759-2634-4675-a569-039b31f97633"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "delete movie",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3456/movies/delete/7de13451-6843-4359-b393-cac4893ff7fc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"movies",
+						"delete",
+						"7de13451-6843-4359-b393-cac4893ff7fc"
 					]
 				}
 			},
