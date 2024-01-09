@@ -131,20 +131,21 @@ const forgotPasswordController = async (req, res, next) => {
         user_id: req.params.user_id,
       },
     });
+
     if (searchUser) {
       const updatedPassword = await models.users.update(
         {
-          user_password: req.body.new_password,
+          user_password: req.body.user_password,
         },
         {
           where: {
-            user_id: req.params.user_id,
+            user_id: searchUser.user_id,
           },
           returning: true,
-          //   individualHooks: true,
+          individualHooks: true,
         }
       );
-      console.log("updatedForgotPassword:", updatedPassword);
+
       if (updatedPassword) {
         return res.json({
           message: "Password Updated Successfully",

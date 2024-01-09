@@ -54,13 +54,11 @@ const loginController = async (req, res, next) => {
         message: "invalid email and username",
       });
     } else {
-      console.log(searchUser.user_password);
-      console.log("req.pass", req.body.user_password);
       const passwordMatch = await helper.comparePassword(
         req.body.user_password,
         searchUser.user_password
       );
-      console.log(passwordMatch);
+
       if (passwordMatch) {
         const payload = {
           id: searchUser.id,

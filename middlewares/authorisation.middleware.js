@@ -3,7 +3,7 @@ const config = require("../config/config");
 
 module.exports = {
   isAuthorised: async (req, res, next) => {
-    console.log(req.headers);
+    // console.log(req.headers);
     try {
       let token = req.headers.Authorization || req.headers.authorization;
       if (token) {
@@ -13,7 +13,7 @@ module.exports = {
           return res.status(401).send("unauthorised not decoded");
         }
         req.decoded = decoded;
-        console.log("decoded", decoded);
+        // console.log("decoded", decoded);
         return next();
       }
       return res.status(401).json({ message: "unauthorised or no token" });
