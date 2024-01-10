@@ -2,6 +2,8 @@ const uploadController = async function (req, res, next) {
   console.log("\n req.file...", req.file);
   try {
     const image = req.file;
+    console.log("dirname", image.__dirname);
+    console.log("filename", image.filename);
     if (image) {
       console.log("path", req.file.path);
       return res.json({

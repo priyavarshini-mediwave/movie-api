@@ -15,6 +15,7 @@ const addMovieController = async (req, res, next) => {
         release_year: req.xop.release_year,
       },
     });
+
     if (searchMovie.length == 0) {
       const createMovie = await models.movies.create({
         movie_name: req.xop.movie_name,
