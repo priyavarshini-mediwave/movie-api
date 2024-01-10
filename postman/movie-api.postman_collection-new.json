@@ -54,7 +54,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n    \"email\": \"Vishnu@gmail.com\",\n     \"user_password\": \"Vishnu@12345\"\n\n}",
+					"raw": "{\n    \"email\": \"priyavarshini@mindwaveventures.com\",\n     \"user_password\": \"priya@12345\"\n\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -156,28 +156,51 @@
 			"name": "add Movie",
 			"request": {
 				"auth": {
-					"type": "noauth"
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{access_token}}",
+							"type": "string"
+						}
+					]
 				},
 				"method": "POST",
 				"header": [],
 				"body": {
-					"mode": "raw",
-					"raw": "{\n    \"movie_name\": \"Iron Man\",\n        \"movie_desc\": \"The First MCU Movie\",\n        \"release_year\": \"2009\"\n}",
-					"options": {
-						"raw": {
-							"language": "json"
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "movie_name",
+							"value": "Leo",
+							"type": "text"
+						},
+						{
+							"key": "movie_desc",
+							"value": "A Hide and Seek thriller to find the Gangster Leo Das",
+							"type": "text"
+						},
+						{
+							"key": "release_year",
+							"value": "2023",
+							"type": "text"
+						},
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/trainee/Pictures/leo.webp"
 						}
-					}
+					]
 				},
 				"url": {
-					"raw": "http://localhost:3456/addMovie",
+					"raw": "http://localhost:3456/movies",
 					"protocol": "http",
 					"host": [
 						"localhost"
 					],
 					"port": "3456",
 					"path": [
-						"addMovie"
+						"movies"
 					]
 				}
 			},
@@ -283,7 +306,7 @@
 					"bearer": [
 						{
 							"key": "token",
-							"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6NSwidXNlcl9pZCI6IjgwOTg5NzU5LTI2MzQtNDY3NS1hNTY5LTAzOWIzMWY5NzYzMyIsInVzZXJfbmFtZSI6InZhcnNoYUBnbWFpbC5jb20iLCJpYXQiOjE3MDMwNTczOTgsImV4cCI6MTcwMzA2MDk5OH0.YqQJMKbgUtQSrL3lAxDz2M2XbvlfCDg0-lcsk_o2swg",
+							"value": "{{access_token}}",
 							"type": "string"
 						}
 					]
@@ -545,6 +568,35 @@
 						"movies",
 						"delete",
 						"7de13451-6843-4359-b393-cac4893ff7fc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "uploads",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "file",
+							"type": "file",
+							"src": "/home/trainee/Pictures/Screenshots/mv colors imp.png"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3456/upload",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3456",
+					"path": [
+						"upload"
 					]
 				}
 			},
